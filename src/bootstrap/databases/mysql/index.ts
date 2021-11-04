@@ -1,3 +1,2 @@
-export class MySQLDatabase{
-    constructor(){}
-}
+
+export * from './mysqlDatabase';

@@ -1,7 +1,5 @@
-import { Server } from "./bootstrap";
+import { Server } from "./bootstrap/server";
 import config from './config'
 
-console.log("Hi from server");
-
 const server = new Server(config);
-server.start()
+server.bootstrap()
