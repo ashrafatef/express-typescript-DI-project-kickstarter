@@ -30,7 +30,7 @@ export class Server {
   private initializeMiddlewares(): any {}
 
   initializeMySQLDatabase(): void {
-    const databaseInstance = container.get<DatabaseConnection>(TYPES.DatabaseConnection);
+    const databaseInstance = container.get<DatabaseConnection>(DatabaseConnection);
     // for (const iterator of mysqlInstance) {
     //   console.log(iterator);
     //   iterator.initialize();

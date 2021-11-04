@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { DatabaseConnection } from "../../bootstrap/databases";
 
 interface IWrite<T> {
@@ -13,7 +14,7 @@ export interface IRead<T> {
 
 // TODO:make it abstract properties to force sub class to implement it differently
 
-
+@injectable()
 export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   constructor(db: DatabaseConnection) {}
   find(item: T): Promise<T[]> {

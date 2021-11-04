@@ -3,7 +3,7 @@ import { provide } from "inversify-binding-decorators";
 import { TYPES } from "../../common/types";
 import { MySqlDatabase } from "./mysql/mysqlDatabase";
 
-@provide(TYPES.DatabaseConnection)
+@provide(DatabaseConnection)
 export class DatabaseConnection{
     private _db: MySqlDatabase;
     constructor(@inject(TYPES.IDatabase ) db: MySqlDatabase){
