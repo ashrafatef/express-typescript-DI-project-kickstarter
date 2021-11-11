@@ -13,11 +13,12 @@ import {
 } from "inversify-express-utils";
 import { IControllerBase } from "../../common/types/controllers";
 import { IService, TYPES } from "../../common/types/services";
+import { TasksService } from "./tasks.service";
 
 @controller("/tasks")
 export class TasksController implements IControllerBase {
   // kat:IService;
-  constructor( @inject(TYPES.TaskService) private katana: IService){
+  constructor(private katana: TasksService) {
     // this.kat = katana;
   }
   @httpPost("/")
@@ -47,13 +48,12 @@ export class TasksController implements IControllerBase {
     throw new Error("Method not implemented.");
   }
   @httpGet("/")
-  get(
+  async get(
     @request() req: express.Request,
     @response() res: express.Response,
     @next() next: express.NextFunction
   ) {
-    // throw new Error("Method not implemented.");
-    this.katana.initialize();
+    await this.katana.initialize();
     return res.json("is up and running");
   }
   @httpGet("/:id")

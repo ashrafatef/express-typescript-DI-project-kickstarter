@@ -1,24 +1,65 @@
-
-
 import { IDatabase, TYPES } from "../../../common/types";
-import mysql from "mysql";
-import { provide } from "inversify-binding-decorators";
+import mysql, { Connection } from "mysql";
+import { fluentProvide, provide } from "inversify-binding-decorators";
 
-@provide(TYPES.IDatabase)
-export class MySqlDatabase implements IDatabase {
-  connect(): void {
-    // const connection = mysql.createConnection({
-    //   host: "localhost",
-    //   user: "ashrafatef",
-    //   password: "botter2176",
-    //   database: "users",
-    // });
-    console.log("From Connection")
-    // connection.connect((err) => {
-    //   console.log(connection);
-    // });
+const provideSingleton = (identifier: any) => {
+  return fluentProvide(identifier).inSingletonScope().done();
+};
+
+@provideSingleton(TYPES.IDatabase)
+export class Database implements IDatabase {
+  private _client: Connection | any;
+  private _config: any;
+
+  public set client(connection: Connection) {
+    this._client = connection;
   }
-  disconnect(): void {
+
+  public get client() {
+    return this._client;
+  }
+
+  constructor() {}
+
+  async connect(config: any): Promise<any> {
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "Botter@1234",
+      database: "tasks_management",
+    });
+
+    await new Promise((resolve: any, reject: any) => {
+      connection.connect((err) => {
+        if (err) {
+          console.log("Database Connection Failed");
+          return reject(err);
+        }
+        console.log(" Database connected!");
+        resolve(true);
+      });
+    });
+
+    this.client = connection;
+  }
+
+  disconnect(): Promise<any> {
     throw new Error("Method not implemented.");
+  }
+
+  async query(querystring: string, params: string[]): Promise<any> {
+    // console.log(this.client);
+    await new Promise((resolve: any, reject: any) => {
+      this.client.query(querystring, (err, results) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        }
+        console.log("======>",results);
+        resolve(results);
+      });
+    });
+
+    return Promise.resolve(true);
   }
 }
