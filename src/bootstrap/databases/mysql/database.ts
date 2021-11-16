@@ -49,17 +49,16 @@ export class Database implements IDatabase {
 
   async query(querystring: string, params: string[]): Promise<any> {
     // console.log(this.client);
-    await new Promise((resolve: any, reject: any) => {
-      this.client.query(querystring, (err, results) => {
+    return  new Promise((resolve: any, reject: any) => {
+      this.client.query(querystring,params, (err, results , fields) => {
         if (err) {
           console.log(err);
           reject(err);
         }
         console.log("======>",results);
+        console.log("======>",fields);
         resolve(results);
       });
     });
-
-    return Promise.resolve(true);
   }
 }

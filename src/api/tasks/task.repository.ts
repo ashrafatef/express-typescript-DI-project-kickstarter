@@ -1,15 +1,13 @@
 import { inject } from "inversify";
 import { provide } from "inversify-binding-decorators";
-import { Database } from "../../bootstrap/databases/mysql/mysqlDatabase";
+import { Database } from "../../bootstrap/databases/mysql/database";
 import { IDatabase, TYPES } from "../../common/types";
 import { BaseRepository } from "../../common/types/repository";
+import { ITask } from "../../config/validation/tasks";
 
-interface ITasks {
-  name: string;
-}
 
 @provide(TaskRepository)
-export class TaskRepository extends BaseRepository<ITasks> {
+export class TaskRepository extends BaseRepository<ITask> {
   private _db: IDatabase;
 
   constructor(@inject(TYPES.IDatabase)db: IDatabase) {
@@ -17,26 +15,29 @@ export class TaskRepository extends BaseRepository<ITasks> {
     this._db = db;
   }
 
-  async find(): Promise<ITasks[]> {
+  async find(): Promise<ITask[]> {
     console.log("From Find Function :");
     console.log(this._db.query);
     await this._db.query("SELECT * FROM Tasks",[])
     return Promise.resolve([
       {
-        name: "ashraf",
+        title: "ashraf",
+        description:"aaa"
       },
     ]);
   }
 
-  findOne(id: string): Promise<ITasks> {
+  findOne(id: string): Promise<ITask> {
     throw new Error("Method not implemented.");
   }
 
-  create(item: ITasks): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  create(item: ITask): Promise<ITask> {
+    const queryString = "INSERT INTO Tasks SET ?";
+    console.log("THIS IS THE ITEM ====>" , item)
+    return this._db.query(queryString,item)
   }
 
-  update(id: string, item: ITasks): Promise<boolean> {
+  update(id: string, item: ITask): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
 

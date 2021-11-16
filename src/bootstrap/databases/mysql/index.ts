@@ -1,2 +1,2 @@
 
-export * from './mysqlDatabase';
+export * from './database';

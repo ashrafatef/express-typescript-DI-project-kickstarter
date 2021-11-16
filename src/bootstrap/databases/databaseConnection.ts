@@ -2,7 +2,7 @@ import { inject } from "inversify";
 import { provide } from "inversify-binding-decorators";
 import { Connection } from "mysql";
 import { IDatabase, TYPES } from "../../common/types";
-import { Database } from "./mysql/mysqlDatabase";
+import { Database } from "./mysql/database";
 
 @provide(DatabaseConnection)
 export class DatabaseConnection {

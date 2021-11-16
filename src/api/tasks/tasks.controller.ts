@@ -1,4 +1,4 @@
-import express from "express";
+import { NextFunction, Response, Request } from "express";
 import { inject } from "inversify";
 import {
   controller,
@@ -11,58 +11,72 @@ import {
   requestParam,
   response,
 } from "inversify-express-utils";
-import { IControllerBase } from "../../common/types/controllers";
+import { BadRequestError } from "../../bootstrap/server/middlewares/errors";
+import {
+  ControllerBase,
+  IControllerBase,
+} from "../../common/types/controllers";
 import { IService, TYPES } from "../../common/types/services";
+import { taskCreatePayload } from "../../config/validation/tasks";
 import { TasksService } from "./tasks.service";
 
 @controller("/tasks")
-export class TasksController implements IControllerBase {
+export class TasksController extends ControllerBase {
   // kat:IService;
-  constructor(private katana: TasksService) {
+  constructor(private _taskService: TasksService) {
+    super();
     // this.kat = katana;
   }
   @httpPost("/")
-  create(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction
-  ) {
-    throw new Error("Method not implemented.");
+  async create(
+    @request() req: Request,
+    @response() res: Response,
+    @next() next: NextFunction
+  ): Promise<any> {
+    const { body } = req;
+    console.log("body =====>" ,  req.body);
+    this.validate(taskCreatePayload, body);
+    const results  = await this._taskService.create(body);
+    return res.formatter.ok(results)
   }
   @httpDelete("/:id")
   delete(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction,
+    @request() req: Request,
+    @response() res: Response,
+    @next() next: NextFunction,
     @requestParam("id") id: string
-  ) {
+  ): Promise<Response> {
     throw new Error("Method not implemented.");
   }
   @httpPut("/:id")
   update(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction,
+    @request() req: Request,
+    @response() res: Response,
+    @next() next: NextFunction,
     @requestParam("id") id: string
-  ) {
+  ): Promise<Response> {
     throw new Error("Method not implemented.");
   }
   @httpGet("/")
   async get(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction
-  ) {
-    await this.katana.initialize();
+    @request() req: Request,
+    @response() res: Response,
+    @next() next: NextFunction
+  ): Promise<Response> {
+    console.log("tetttttttt")
+    throw new BadRequestError("bad request");
+    
+    // throw Error("teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet");
+    // await this._taskService.initialize();
     return res.json("is up and running");
   }
   @httpGet("/:id")
   getById(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction,
+    @request() req: Request,
+    @response() res: Response,
+    @next() next: NextFunction,
     @requestParam("id") id: string
-  ) {
+  ): Promise<Response> {
     throw new Error("Method not implemented.");
   }
 }

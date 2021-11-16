@@ -3,7 +3,7 @@ import { IDatabase } from ".";
 import { DatabaseConnection } from "../../bootstrap/databases";
 
 interface IWrite<T> {
-  create(item: T): Promise<boolean>;
+  create(item: T): Promise<T>;
   update(id: string, item: T): Promise<boolean>;
   delete(id: string): Promise<boolean>;
 }
@@ -20,7 +20,7 @@ export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   // constructor(db: IDatabase) {}
   abstract find(): Promise<T[]>;
   abstract findOne(id: string): Promise<T>;
-  abstract create(item: T): Promise<boolean>;
+  abstract create(item: T): Promise<T>;
   abstract update(id: string, item: T): Promise<boolean>;
   abstract delete(id: string): Promise<boolean>;
 }
