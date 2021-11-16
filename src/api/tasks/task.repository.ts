@@ -1,8 +1,8 @@
 import { inject } from "inversify";
 import { provide } from "inversify-binding-decorators";
 import { Database } from "../../bootstrap/databases/mysql/database";
-import { IDatabase, TYPES } from "../../common/types";
-import { BaseRepository } from "../../common/types/repository";
+import { IDatabase, TYPES } from "../../config/types";
+import { BaseRepository } from "../../config/types/repository";
 import { ITask } from "../../config/validation/tasks";
 
 

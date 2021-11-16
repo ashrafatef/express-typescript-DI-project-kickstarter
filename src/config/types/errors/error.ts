@@ -1,4 +1,4 @@
-import { HTTPCODES } from "../../../../config/types";
+import { HTTPCODES } from "..";
 import { ErrorFormateKey } from "./types";
 
 export class BaseError extends Error {

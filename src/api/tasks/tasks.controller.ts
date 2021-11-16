@@ -11,12 +11,12 @@ import {
   requestParam,
   response,
 } from "inversify-express-utils";
-import { BadRequestError } from "../../bootstrap/server/middlewares/errors";
+import { BadRequestError } from "../../config/types/errors";
 import {
   ControllerBase,
   IControllerBase,
-} from "../../common/types/controllers";
-import { IService, TYPES } from "../../common/types/services";
+} from "../../config/types/controllers";
+import { IService, TYPES } from "../../config/types/services";
 import { taskCreatePayload } from "../../config/validation/tasks";
 import { TasksService } from "./tasks.service";
 

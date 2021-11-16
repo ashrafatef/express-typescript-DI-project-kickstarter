@@ -1,5 +1,5 @@
 import { provide } from "inversify-binding-decorators";
-import { IService, TYPES } from "../../common/types/services";
+import { IService, TYPES } from "../../config/types/services";
 import { ITask } from "../../config/validation/tasks";
 import { TaskRepository } from "./task.repository";
 

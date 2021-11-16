@@ -1,4 +1,4 @@
-import { IDatabase, TYPES } from "../../../common/types";
+import { IDatabase, TYPES } from "../../../config/types";
 import mysql, { Connection } from "mysql";
 import { fluentProvide, provide } from "inversify-binding-decorators";
 

@@ -1,3 +1,3 @@
-export const production = {
+export const testing = {
     port : process.env.PORT || 3000
 }

@@ -9,7 +9,7 @@ import { Container, interfaces } from "inversify";
 import { InversifyExpressServer } from "inversify-express-utils";
 import bodyParser from "body-parser";
 import { responseEnhancer } from "express-response-formatter";
-import { BaseError } from "./middlewares/errors";
+import { BaseError } from "../../config/types/errors";
 
 export class Server {
   config: any;
