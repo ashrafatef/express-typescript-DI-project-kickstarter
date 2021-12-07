@@ -1,1 +1,1 @@
-#  Express Typescript DI Project KickstarterCancel changes
+#  Express Typescript DI Project Kickstarter
