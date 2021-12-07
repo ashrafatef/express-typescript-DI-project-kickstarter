@@ -1,5 +1,7 @@
 #  Express Typescript DI Project Kickstarter
 
+![Typescipt](https://miro.medium.com/max/816/1*TpbxEQy4ckB-g31PwUQPlg.png)
+
 ## Technologies Used
 - NodeJs
 - Typescript
