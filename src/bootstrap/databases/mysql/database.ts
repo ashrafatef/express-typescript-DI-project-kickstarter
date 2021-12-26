@@ -1,17 +1,17 @@
 import { IDatabase, TYPES } from "../../../config/types";
 import mysql, { Connection } from "mysql";
 import { fluentProvide, provide } from "inversify-binding-decorators";
-
+import { Client } from 'pg';
 const provideSingleton = (identifier: any) => {
   return fluentProvide(identifier).inSingletonScope().done();
 };
 
 @provideSingleton(TYPES.IDatabase)
 export class Database implements IDatabase {
-  private _client: Connection | any;
+  private _client: Client | any;
   private _config: any;
 
-  public set client(connection: Connection) {
+  public set client(connection: Client) {
     this._client = connection;
   }
 
@@ -19,28 +19,18 @@ export class Database implements IDatabase {
     return this._client;
   }
 
-  constructor() {}
+  constructor() { }
 
   async connect(config: any): Promise<any> {
-    const connection = mysql.createConnection({
+    const client = new Client({
       host: "localhost",
-      user: "root",
-      password: "Botter@1234",
+      user: "ashraf",
+      password: "ashraf1234",
       database: "tasks_management",
     });
-
-    await new Promise((resolve: any, reject: any) => {
-      connection.connect((err) => {
-        if (err) {
-          console.log("Database Connection Failed");
-          return reject(err);
-        }
-        console.log(" Database connected!");
-        resolve(true);
-      });
-    });
-
-    this.client = connection;
+    await client.connect();
+    console.log("Database Connected");
+    this.client = client;
   }
 
   disconnect(): Promise<any> {
@@ -48,15 +38,12 @@ export class Database implements IDatabase {
   }
 
   async query(querystring: string, params: string[]): Promise<any> {
-    // console.log(this.client);
-    return  new Promise((resolve: any, reject: any) => {
-      this.client.query(querystring,params, (err, results , fields) => {
+    return new Promise((resolve: any, reject: any) => {
+      this.client.query(querystring, params, (err, results) => {
         if (err) {
           console.log(err);
           reject(err);
         }
-        console.log("======>",results);
-        console.log("======>",fields);
         resolve(results);
       });
     });

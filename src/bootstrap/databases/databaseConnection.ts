@@ -9,7 +9,6 @@ export class DatabaseConnection {
   private _db: IDatabase;
 
   constructor(@inject(TYPES.IDatabase) db: IDatabase) {
-    console.log("database connection constructor");
     this._db = db;
   }
 

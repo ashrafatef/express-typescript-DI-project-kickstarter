@@ -16,12 +16,12 @@ import {
   ControllerBase,
   IControllerBase,
 } from "../../config/types/controllers";
-import { IService, TYPES } from "../../config/types/services";
 import { taskCreatePayload } from "../../config/validation/tasks";
 import { TasksService } from "./tasks.service";
 
 @controller("/tasks")
 export class TasksController extends ControllerBase {
+  
   constructor(private _taskService: TasksService) {
     super();
   }
