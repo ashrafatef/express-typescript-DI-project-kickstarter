@@ -35,19 +35,11 @@ export class AuthenticationService {
         }
     }
 
-    async signup(data: IUser): Promise<any> {
-        // encrypt user password
+    async signup(user: IUser): Promise<any> {
         const saltRound = 10;
-        const hashedPassword = await bcrypt.hash(data.password, saltRound);
-        const newUser: IUser = {
-            name: data.name,
-            username: data.username,
-            password: hashedPassword,
-            email: data.email
-        }
-        // save user with encrypted password
-        return this._userRepository.create(newUser);
-        // throw new Error("Method not implemented.");
+        const hashedPassword = await bcrypt.hashSync(user.password, saltRound);
+        user.password = hashedPassword;
+        return this._userRepository.create(user);
     }
 
     async resetPassword(data: IUser): Promise<any> {

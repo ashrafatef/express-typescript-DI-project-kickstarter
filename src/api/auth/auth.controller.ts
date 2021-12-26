@@ -18,13 +18,9 @@ export class AuthenticationController {
     }
 
     @httpPost('/signup')
-    delete(req: any, res: Response, next: NextFunction): any {
+    async signup(req: any, res: Response, next: NextFunction): Promise<any> {
         req.validate(userCreatePayload , req.body);
-        console.log("payload ===>" , req.body)
-        const results  = this._authService.signup(req.body);
-        res.formatter.ok('');
-        return;
-        // throw new Error("Method not implemented.");
+        return await this._authService.signup(req.body);
     }
 
     @httpPost('/reset-password')
