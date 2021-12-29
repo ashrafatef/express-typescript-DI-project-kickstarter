@@ -29,7 +29,7 @@ export class TasksController extends ControllerBase {
   @httpPost("/")
   async create(@request() req: Request, @response() res: Response, @next() next: NextFunction): Promise<any> {
     const { body } = req;
-    console.log("body =====>", req.body);
+    // console.log("body =====>", req.body);
     this.validate(taskCreatePayload, body);
     const results = await this._taskService.create(body);
     return res.formatter.ok(results)

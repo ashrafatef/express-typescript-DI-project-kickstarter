@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express, { Application, NextFunction, Request, Response } from "express";
+import "../../utils";
 import "../../api";
 import "../databases";
 import { DatabaseConnection } from "../databases";
@@ -9,18 +10,17 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import { responseEnhancer } from "express-response-formatter";
 import { BaseError } from "../../config/types/errors";
 import Ajv from "ajv";
-
+import { Logger } from "../../utils/logger/logger.service";
+import expressPinoLogger from "express-pino-logger";
 export class Server {
   config: any;
   app: express.Application | any;
   server: InversifyExpressServer | any;
   appContainer: Container = new Container();
-  private _validator: Ajv;
 
 
   constructor(config: any) {
     this.config = config;
-    this._validator = new Ajv();
   }
 
   private async startServer() {
@@ -37,7 +37,7 @@ export class Server {
   async initializeDatabase(): Promise<any> {
     const databaseInstance =
       this.appContainer.get<DatabaseConnection>(DatabaseConnection);
-    await databaseInstance.initialize(this.config);
+    await databaseInstance.initialize(this.config.db);
   }
 
   initializeServer(appContainer: interfaces.Container) {
@@ -51,21 +51,15 @@ export class Server {
     this.appContainer.load(buildProviderModule());
     this.initializeServer(this.appContainer);
   }
+
   private validate(schema: any, payload: any) {
     const ajv = new Ajv()
-    console.log("TEEEEEEEEEEEEEEEEEEST", ajv)
-    console.log(schema)
     const validate = ajv.compile(schema);
-    console.log("TEEEEEEEEEEEEEEEEEEST ====>", validate)
-    // const valid = validate(payload);
-    // console.log("TEEEEEEEEEEEEEEEEEEST ----> " , valid)
-    // if (!valid) {
-    //   // console.log(valid);
-    //   // console.log(validate.errors);
-    //   throw validate.errors;
-    // }
   }
+
   private initializeServerConfig() {
+    const loggerInstance = this.appContainer.get<Logger>(Logger);
+
     this.server.setConfig((app: Application) => {
       app.use(express.json());
       app.use(express.urlencoded());
@@ -74,6 +68,14 @@ export class Server {
         req.validate = this.validate;
         next();
       });
+      app.use(expressPinoLogger(
+        {
+          logger: loggerInstance.logger,
+          customSuccessMessage: function (res: any) {
+            return `${res.req.ip} - ${res.req.method} - ${res.req.url} - ${res.statusCode} - time:${res.responseTime}`;
+          },
+        }
+      ))
     });
 
     this.server.setErrorConfig((app: Application) => {

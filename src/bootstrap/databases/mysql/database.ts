@@ -1,4 +1,4 @@
-import { IDatabase, TYPES } from "../../../config/types";
+import { DatabaseConfig, IDatabase, TYPES } from "../../../config/types";
 import mysql, { Connection } from "mysql";
 import { fluentProvide, provide } from "inversify-binding-decorators";
 import { Client } from 'pg';
@@ -21,12 +21,12 @@ export class Database implements IDatabase {
 
   constructor() { }
 
-  async connect(config: any): Promise<any> {
+  async connect(config: DatabaseConfig): Promise<any> {
     const client = new Client({
-      host: "localhost",
-      user: "ashraf",
-      password: "ashraf1234",
-      database: "tasks_management",
+      host: config.host,
+      user: config.user,
+      password: config.password,
+      database: config.name,
     });
     await client.connect();
     console.log("Database Connected");

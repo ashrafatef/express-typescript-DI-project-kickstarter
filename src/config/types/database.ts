@@ -5,3 +5,10 @@ export interface IDatabase{
     disconnect():Promise<any>
     query(querystring:string , params:string[]| {}):Promise<any>
 }
+
+export interface DatabaseConfig{
+    host:string;
+    user:string;
+    password:string;
+    name:string;
+}

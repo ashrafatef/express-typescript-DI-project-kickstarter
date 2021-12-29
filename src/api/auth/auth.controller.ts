@@ -1,11 +1,7 @@
-
-
-
 import { Request, Response, NextFunction } from "express";
 import { controller, httpPost } from "inversify-express-utils";
 import { userCreatePayload } from "../../config/validation/users";
 import { AuthenticationService } from "./auth.service";
-
 @controller("/auth")
 export class AuthenticationController {
     constructor(private _authService: AuthenticationService) {
